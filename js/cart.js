@@ -52,6 +52,7 @@ function cartTotal(){
 function updateCartBadge(){
   document.querySelectorAll(".cart-count").forEach(el => {
     el.textContent = cartCount();
+    if(typeof bumpElement === "function") bumpElement(el);
   });
 }
 
