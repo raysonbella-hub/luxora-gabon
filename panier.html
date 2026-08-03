@@ -29,7 +29,7 @@
 <main>
   <section style="padding-top:70px;">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal="fade-up">
         <span class="eyebrow">Votre commande</span>
         <h1>Panier</h1>
       </div>
@@ -80,7 +80,7 @@
       if(!p) return;
       const qty = cart[id];
       rows += `
-        <tr>
+        <tr data-row="${id}" data-reveal="fade">
           <td>
             <div class="cart-item-name">
               <div class="cart-item-icon">${ICONS[p.icon]}</div>
@@ -91,11 +91,11 @@
           <td>
             <div class="qty-control">
               <button data-action="minus" data-id="${id}">−</button>
-              <span>${qty}</span>
+              <span data-qty-value="${id}">${qty}</span>
               <button data-action="plus" data-id="${id}">+</button>
             </div>
           </td>
-          <td>${formatFCFA(p.price * qty)}</td>
+          <td data-subtotal="${id}">${formatFCFA(p.price * qty)}</td>
           <td><button class="remove-btn" data-action="remove" data-id="${id}">Retirer</button></td>
         </tr>
       `;
@@ -108,10 +108,10 @@
         <thead><tr><th>Produit</th><th>Prix</th><th>Quantité</th><th>Sous-total</th><th></th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
-      <div class="cart-summary">
-        <div class="row"><span>Sous-total</span><span>${formatFCFA(total)}</span></div>
+      <div class="cart-summary" data-reveal="fade-up">
+        <div class="row"><span>Sous-total</span><span id="summary-subtotal">${formatFCFA(total)}</span></div>
         <div class="row"><span>Livraison</span><span>Calculée à la confirmation</span></div>
-        <div class="row total"><span>Total</span><span>${formatFCFA(total)}</span></div>
+        <div class="row total"><span>Total</span><span id="summary-total">${formatFCFA(total)}</span></div>
         <a class="btn btn-primary" id="checkout-btn" href="#" target="_blank" rel="noopener">Commander sur WhatsApp</a>
         <p class="cart-note">Paiement en espèces à la livraison — aucun paiement en ligne requis.</p>
       </div>
@@ -119,21 +119,52 @@
 
     document.getElementById("checkout-btn").href = buildWhatsAppLink();
 
+    if(typeof initScrollReveal === "function") initScrollReveal();
+
     container.querySelectorAll("button[data-action]").forEach(btn => {
       btn.addEventListener("click", () => {
         const id = btn.dataset.id;
         const action = btn.dataset.action;
         const cart = getCart();
-        if(action === "plus"){ setQty(id, (cart[id]||0) + 1); }
-        if(action === "minus"){ setQty(id, (cart[id]||0) - 1); }
-        if(action === "remove"){ removeFromCart(id); return; }
-        renderCartPage();
+
+        if(action === "remove"){
+          const row = container.querySelector(`tr[data-row="${id}"]`);
+          if(row){
+            row.classList.add("removing");
+            setTimeout(() => { removeFromCart(id); }, 320);
+          } else {
+            removeFromCart(id);
+          }
+          return;
+        }
+
+        let newQty = cart[id] || 0;
+        if(action === "plus") newQty += 1;
+        if(action === "minus") newQty -= 1;
+        setQty(id, newQty);
+
+        if(newQty <= 0){
+          renderCartPage();
+          return;
+        }
+
+        // Mise à jour ciblée (pas de re-rendu complet) pour garder l'animation "bump" fluide
+        const qtyEl = container.querySelector(`[data-qty-value="${id}"]`);
+        const subtotalEl = container.querySelector(`[data-subtotal="${id}"]`);
+        const p = LUXORA_PRODUCTS[id];
+        if(qtyEl){ qtyEl.textContent = newQty; if(typeof bumpElement === "function") bumpElement(qtyEl); }
+        if(subtotalEl && p) subtotalEl.textContent = formatFCFA(p.price * newQty);
+        document.getElementById("summary-subtotal").textContent = formatFCFA(cartTotal());
+        document.getElementById("summary-total").textContent = formatFCFA(cartTotal());
+        document.getElementById("checkout-btn").href = buildWhatsAppLink();
       });
     });
   }
 
   document.addEventListener("DOMContentLoaded", renderCartPage);
 </script>
+
+<script src="js/animations.js"></script>
 
 </body>
 </html>

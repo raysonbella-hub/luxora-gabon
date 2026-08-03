@@ -74,9 +74,11 @@
   };
 
   const grid = document.getElementById("shop-grid");
+  grid.setAttribute("data-reveal-group", "");
   Object.entries(LUXORA_PRODUCTS).forEach(([id, p]) => {
     const card = document.createElement("div");
     card.className = "product-card";
+    card.setAttribute("data-reveal", "fade-up");
     card.innerHTML = `
       <a href="produit.html?id=${id}" class="picon-wrap">${ICONS[p.icon]}</a>
       <h3><a href="produit.html?id=${id}">${p.name}</a></h3>
@@ -93,9 +95,12 @@
   grid.addEventListener("click", (e) => {
     if(e.target.matches("button[data-id]")){
       addToCart(e.target.dataset.id, 1);
+      pulseSuccess(e.target, "Ajouté ✓");
     }
   });
 </script>
+
+<script src="js/animations.js"></script>
 
 </body>
 </html>

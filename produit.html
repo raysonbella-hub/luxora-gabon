@@ -150,6 +150,7 @@
     details.steps.forEach((s, i) => {
       const div = document.createElement("div");
       div.className = "step";
+      div.setAttribute("data-reveal", "fade-up");
       div.innerHTML = `<span class="num">${i+1}.</span><div><h4 style="font-size:16px; margin-bottom:6px;">${s.title}</h4><p>${s.text}</p></div>`;
       stepsEl.appendChild(div);
     });
@@ -159,7 +160,10 @@
     document.getElementById("qty-minus").addEventListener("click", () => { if(qty>1){ qty--; qtyValue.textContent = qty; } });
     document.getElementById("qty-plus").addEventListener("click", () => { qty++; qtyValue.textContent = qty; });
 
-    document.getElementById("add-cart-btn").addEventListener("click", () => addToCart(id, qty));
+    document.getElementById("add-cart-btn").addEventListener("click", (e) => {
+      addToCart(id, qty);
+      pulseSuccess(e.currentTarget, "Ajouté ✓");
+    });
 
     const buyBtn = document.getElementById("buy-now-btn");
     function updateBuyLink(){
@@ -181,6 +185,8 @@
     });
   });
 </script>
+
+<script src="js/animations.js"></script>
 
 </body>
 </html>
