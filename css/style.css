@@ -202,3 +202,108 @@ footer .fine{ font-size:12px; color:var(--ivory-dim); }
 .footer-links a:hover{ color:var(--gold); }
 
 ::selection{ background:var(--gold); color:var(--ink); }
+
+/* ============ ANIMATIONS ============ */
+
+/* Fondu d'entrée de page (léger, évite le flash brutal) */
+body{ opacity:0; transition:opacity .5s ease; }
+body.page-ready{ opacity:1; }
+@media (prefers-reduced-motion: reduce){
+  body{ opacity:1; transition:none; }
+}
+
+/* Reveal au défilement */
+[data-reveal]{
+  opacity:0;
+  transform:translateY(28px);
+  transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);
+  will-change:opacity, transform;
+}
+[data-reveal].in-view{ opacity:1; transform:translateY(0); }
+[data-reveal="fade"]{ transform:none; }
+[data-reveal="zoom"]{ transform:scale(0.94); }
+[data-reveal="zoom"].in-view{ transform:scale(1); }
+
+/* Canvas 3D du hero */
+.hero-canvas{
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:min(560px, 90vw);
+  height:min(560px, 90vw);
+  z-index:0;
+  pointer-events:none;
+  opacity:0.9;
+}
+.hero > *:not(.hero-canvas){ position:relative; z-index:1; }
+
+/* Bouton — effet de balayage lumineux au survol */
+.btn{ position:relative; overflow:hidden; }
+.btn::before{
+  content:"";
+  position:absolute; top:0; left:-120%; width:60%; height:100%;
+  background:linear-gradient(115deg, transparent, rgba(255,255,255,0.28), transparent);
+  transform:skewX(-20deg);
+  transition:left .6s ease;
+  pointer-events:none;
+}
+.btn:hover::before{ left:130%; }
+@media (prefers-reduced-motion: reduce){
+  .btn::before{ display:none; }
+}
+
+/* État de succès temporaire sur bouton (ajout au panier) */
+.btn-success-pulse{
+  animation:success-pulse .5s ease;
+  background:var(--gold-light) !important;
+}
+@keyframes success-pulse{
+  0%{ transform:scale(1); }
+  40%{ transform:scale(1.05); }
+  100%{ transform:scale(1); }
+}
+
+/* Cartes produit — légère élévation au survol */
+.product-card{ transition:transform .4s ease, background .4s ease; }
+.product-card:hover{ transform:translateY(-6px); }
+.picon-wrap{ transition:transform .5s ease; }
+.product-card:hover .picon-wrap{ transform:scale(1.06) rotate(-2deg); }
+
+/* Bump — petite pulsation sur un élément (ex: quantité modifiée) */
+.bump{ animation:bump .32s ease; }
+@keyframes bump{
+  0%{ transform:scale(1); }
+  50%{ transform:scale(1.35); color:var(--gold-light); }
+  100%{ transform:scale(1); }
+}
+
+/* Lignes du panier — transition douce à la suppression */
+.cart-table tr{ transition:opacity .35s ease, transform .35s ease; }
+.cart-table tr.removing{ opacity:0; transform:translateX(12px); }
+
+/* Monogramme — halo doux qui respire derrière lui */
+.monogram{ position:relative; }
+.monogram::after{
+  content:""; position:absolute; inset:-30%;
+  background:radial-gradient(circle, rgba(201,162,39,0.18), transparent 70%);
+  z-index:-1; border-radius:50%;
+  animation:breathe 4s ease-in-out infinite;
+}
+@keyframes breathe{
+  0%,100%{ opacity:0.6; transform:scale(1); }
+  50%{ opacity:1; transform:scale(1.12); }
+}
+@media (prefers-reduced-motion: reduce){
+  .monogram::after{ animation:none; }
+}
+
+/* Lien nav — soulignement animé */
+.navlinks a{ position:relative; }
+.navlinks a::after{
+  content:""; position:absolute; left:0; bottom:-4px; width:0; height:1px;
+  background:var(--gold); transition:width .3s ease;
+}
+.navlinks a:hover::after, .navlinks a.active::after{ width:100%; }
+
+/* Compteur panier — pulsation quand il change */
+.cart-count.bump{ animation:bump .4s ease; }
