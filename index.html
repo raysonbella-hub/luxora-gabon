@@ -37,7 +37,7 @@
       <path d="M68 72 C 74 62, 80 58, 84 62 C 80 70, 74 76, 68 72 Z" />
     </svg>
     <h1>L'éclat qui vous <em>appartient</em>.</h1>
-    <p class="lede">LUXORA — la gamme de beauté premium pensée pour la femme gabonaise moderne. Collagène, éclat du teint, silhouette : un rituel pour chaque objectif.</p>
+    <p class="lede">LUXORA sélectionne et importe pour vous les meilleurs produits de beauté — vérifiés, garantis, livrés chez vous au Gabon.</p>
     <div class="ctas">
       <a class="btn btn-primary" href="boutique.html">Découvrir la boutique</a>
       <a class="btn btn-ghost" href="#gamme">Voir la gamme</a>
@@ -53,8 +53,8 @@
     <div class="wrap">
       <div class="section-head center" data-reveal="fade-up">
         <span class="eyebrow">La gamme</span>
-        <h2>Quatre rituels, un seul objectif</h2>
-        <p>Chaque produit LUXORA répond à un besoin précis — composition transparente, garantie écrite, paiement à la livraison.</p>
+        <h2>Une sélection en pleine croissance</h2>
+        <p>Chaque produit LUXORA répond à un besoin précis — vérifié, garanti, livré chez vous.</p>
       </div>
       <div class="grid-products" id="home-products" data-reveal-group></div>
     </div>
@@ -129,9 +129,14 @@
     const card = document.createElement("div");
     card.className = "product-card";
     card.setAttribute("data-reveal", "fade-up");
+    const visual = p.image
+      ? `<div class="picon-wrap" style="border-radius:2px;overflow:hidden;"><img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;"></div>`
+      : `<div class="picon-wrap">${ICONS[p.icon]}</div>`;
+    const brandTag = p.brand ? `<p style="text-align:center;font-size:10px;letter-spacing:0.1em;color:var(--ivory-dim);text-transform:uppercase;margin-bottom:8px;">Marque ${p.brand}</p>` : "";
     card.innerHTML = `
-      <div class="picon-wrap">${ICONS[p.icon]}</div>
+      ${visual}
       <h3>${p.name}</h3>
+      ${brandTag}
       <p class="tagline">${p.tagline}</p>
       <p class="price"><span class="strike">${formatFCFA(p.oldPrice)}</span>${formatFCFA(p.price)}</p>
       <div class="actions">

@@ -133,8 +133,18 @@
     document.querySelector("main").innerHTML = `<div class="wrap" style="padding:120px 0; text-align:center;"><h1>Produit introuvable</h1><p style="margin-top:16px;"><a href="boutique.html" style="color:var(--gold); text-decoration:underline;">Retour à la boutique</a></p></div>`;
   } else {
     document.getElementById("page-title").textContent = "LUXORA — " + product.name;
-    document.getElementById("product-icon").innerHTML = ICONS[product.icon];
+    const iconEl = document.getElementById("product-icon");
+    if(product.image){
+      iconEl.innerHTML = `<img src="${product.image}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover;border-radius:2px;">`;
+      iconEl.style.width = "100%";
+      iconEl.style.height = "100%";
+    } else {
+      iconEl.innerHTML = ICONS[product.icon];
+    }
     document.getElementById("product-name").textContent = product.name;
+    if(product.brand){
+      document.getElementById("product-eyebrow").textContent = "LUXORA sélectionne — Marque " + product.brand;
+    }
     document.getElementById("product-desc").textContent = details.description;
     document.getElementById("product-old-price").textContent = formatFCFA(product.oldPrice);
     document.getElementById("product-price").textContent = formatFCFA(product.price);

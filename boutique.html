@@ -32,7 +32,7 @@
       <div class="section-head">
         <span class="eyebrow">La boutique</span>
         <h1>Toute la gamme LUXORA</h1>
-        <p>Quatre produits, une même exigence : composition transparente, garantie 14 jours, paiement à la livraison.</p>
+        <p>Notre sélection s'agrandit progressivement — une même exigence : produits vérifiés, garantie 14 jours, paiement à la livraison.</p>
       </div>
     </div>
   </section>
@@ -79,9 +79,14 @@
     const card = document.createElement("div");
     card.className = "product-card";
     card.setAttribute("data-reveal", "fade-up");
+    const visual = p.image
+      ? `<a href="produit.html?id=${id}" class="picon-wrap" style="border-radius:2px;overflow:hidden;"><img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;"></a>`
+      : `<a href="produit.html?id=${id}" class="picon-wrap">${ICONS[p.icon]}</a>`;
+    const brandTag = p.brand ? `<p style="text-align:center;font-size:10px;letter-spacing:0.1em;color:var(--ivory-dim);text-transform:uppercase;margin-bottom:8px;">Marque ${p.brand}</p>` : "";
     card.innerHTML = `
-      <a href="produit.html?id=${id}" class="picon-wrap">${ICONS[p.icon]}</a>
+      ${visual}
       <h3><a href="produit.html?id=${id}">${p.name}</a></h3>
+      ${brandTag}
       <p class="tagline">${p.tagline}</p>
       <p class="price"><span class="strike">${formatFCFA(p.oldPrice)}</span>${formatFCFA(p.price)}</p>
       <div class="actions">
