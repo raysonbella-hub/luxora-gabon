@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LUXORA — L'éclat qui vous appartient</title>
-<meta name="description" content="LUXORA, la marque de beauté premium pensée pour la femme gabonaise moderne. Découvrez notre gamme : collagène, sérum éclat, complément silhouette. Paiement à la livraison.">
+<title>LUXORA — Beauté au Gabon</title>
+<meta name="description" content="LUXORA — produits de beauté sélectionnés et distribués au Gabon. Livraison à Libreville, Owendo, Akanda, Port-Gentil et Franceville.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -21,7 +21,6 @@
     <div class="navlinks">
       <a href="index.html" class="active">Accueil</a>
       <a href="boutique.html">Boutique</a>
-      <a href="#garantie-home">Garantie</a>
       <a href="panier.html" class="cart-link">Panier <span class="cart-count">0</span></a>
     </div>
   </nav>
@@ -29,69 +28,36 @@
 
 <main>
 
-  <section class="hero">
-    <div class="hero-canvas" id="hero-canvas"></div>
-    <svg class="monogram" viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="50" r="46"/>
-      <path d="M32 24 L32 72 L68 72" />
-      <path d="M68 72 C 74 62, 80 58, 84 62 C 80 70, 74 76, 68 72 Z" />
-    </svg>
-    <h1>L'éclat qui vous <em>appartient</em>.</h1>
-    <p class="lede">LUXORA sélectionne et importe pour vous les meilleurs produits de beauté — vérifiés, garantis, livrés chez vous au Gabon.</p>
-    <div class="ctas">
-      <a class="btn btn-primary" href="boutique.html">Découvrir la boutique</a>
-      <a class="btn btn-ghost" href="#gamme">Voir la gamme</a>
-    </div>
-    <div class="microtrust">
-      <span><i class="dot"></i>Paiement à la livraison</span>
-      <span><i class="dot"></i>Garantie 14 jours</span>
-      <span><i class="dot"></i>Livraison Libreville 24-48h</span>
+  <section style="padding-top:130px; padding-bottom:40px;">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">LUXORA</span>
+        <h1 style="font-size:clamp(30px,4vw,44px);">Produits de beauté, livrés chez vous au Gabon</h1>
+        <p>Chaque produit est présenté individuellement, avec son propre effet et son propre usage. Paiement à la réception.</p>
+      </div>
     </div>
   </section>
 
-  <section id="gamme" style="background:var(--charcoal);">
+  <section style="padding-top:0;">
     <div class="wrap">
-      <div class="section-head center" data-reveal="fade-up">
-        <span class="eyebrow">La gamme</span>
-        <h2>Une sélection en pleine croissance</h2>
-        <p>Chaque produit LUXORA répond à un besoin précis — vérifié, garanti, livré chez vous.</p>
-      </div>
-      <div class="grid-products" id="home-products" data-reveal-group></div>
+      <div class="grid-products" id="home-products"></div>
     </div>
   </section>
 
-  <section class="trust" id="garantie-home">
+  <section class="trust">
     <div class="wrap">
-      <div class="section-head center" data-reveal="fade-up">
-        <span class="eyebrow">Pourquoi LUXORA</span>
-        <h2>Une confiance qui se prouve, pas qui se déclare.</h2>
-      </div>
-      <div class="trust-grid" data-reveal-group>
-        <div class="trust-item" data-reveal="fade-up">
-          <svg class="trust-icon" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17"/><path d="M13 20 L18 25 L28 14"/></svg>
-          <h4>Garantie 14 jours</h4>
-          <p>Produit non ouvert ? Retour et remboursement intégral sous 14 jours.</p>
-        </div>
-        <div class="trust-item" data-reveal="fade-up">
+      <div class="trust-grid" style="grid-template-columns:repeat(2,1fr);">
+        <div class="trust-item">
           <svg class="trust-icon" viewBox="0 0 40 40"><rect x="6" y="14" width="20" height="14" rx="1"/><path d="M26 18 H32 L34 22 V28 H26 Z"/><circle cx="13" cy="30" r="2.4"/><circle cx="29" cy="30" r="2.4"/></svg>
           <h4>Paiement à la livraison</h4>
-          <p>Vous réglez en espèces uniquement au moment où vous recevez votre commande.</p>
+          <p>Vous réglez en espèces uniquement à la réception de votre commande.</p>
         </div>
-        <div class="trust-item" data-reveal="fade-up">
+        <div class="trust-item">
           <svg class="trust-icon" viewBox="0 0 40 40"><path d="M20 6 L34 13 V22 C34 30 28 34 20 36 C12 34 6 30 6 22 V13 Z"/></svg>
-          <h4>Composition transparente</h4>
-          <p>La liste complète des ingrédients est indiquée sur chaque emballage.</p>
+          <h4>Produits vérifiés</h4>
+          <p>Chaque produit est sélectionné avant d'être proposé à la vente.</p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="final-cta" style="text-align:center; background:var(--charcoal);">
-    <div class="wrap" data-reveal="zoom">
-      <span class="eyebrow">Prête ?</span>
-      <h2 style="margin-top:16px; font-size:clamp(28px,5vw,44px);">Trouvez le rituel qui vous correspond.</h2>
-      <p style="color:var(--ivory-dim); max-width:460px; margin:16px auto 30px;">Parcourez la boutique et composez votre routine LUXORA.</p>
-      <a class="btn btn-primary" href="boutique.html">Voir la boutique</a>
     </div>
   </section>
 
@@ -130,25 +96,23 @@
     card.className = "product-card";
     card.setAttribute("data-reveal", "fade-up");
     const visual = p.image
-      ? `<div class="picon-wrap" style="border-radius:2px;overflow:hidden;"><img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;"></div>`
-      : `<div class="picon-wrap">${ICONS[p.icon]}</div>`;
+      ? `<a href="produit.html?id=${id}" class="picon-wrap" style="border-radius:2px;overflow:hidden;"><img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;"></a>`
+      : `<a href="produit.html?id=${id}" class="picon-wrap">${ICONS[p.icon]}</a>`;
     const brandTag = p.brand ? `<p style="text-align:center;font-size:10px;letter-spacing:0.1em;color:var(--ivory-dim);text-transform:uppercase;margin-bottom:8px;">Marque ${p.brand}</p>` : "";
     card.innerHTML = `
       ${visual}
-      <h3>${p.name}</h3>
+      <h3><a href="produit.html?id=${id}">${p.name}</a></h3>
       ${brandTag}
       <p class="tagline">${p.tagline}</p>
       <p class="price"><span class="strike">${formatFCFA(p.oldPrice)}</span>${formatFCFA(p.price)}</p>
       <div class="actions">
-        <a class="btn btn-primary btn-sm" href="produit.html?id=${id}">Découvrir</a>
+        <a class="btn btn-primary btn-sm" href="produit.html?id=${id}">Commander</a>
       </div>
     `;
     grid.appendChild(card);
   });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-<script src="js/three-hero.js"></script>
 <script src="js/animations.js"></script>
 
 </body>

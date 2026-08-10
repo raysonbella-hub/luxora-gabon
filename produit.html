@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="page-title">LUXORA — Produit</title>
-<meta name="description" content="Découvrez ce produit de la gamme LUXORA. Composition transparente, garantie 14 jours, paiement à la livraison au Gabon.">
+<meta name="description" content="Découvrez ce produit chez LUXORA. Livraison au Gabon.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -30,7 +30,14 @@
   <section style="padding-top:60px; padding-bottom:60px;">
     <div class="wrap">
       <a href="boutique.html" style="font-size:12px; letter-spacing:0.1em; color:var(--ivory-dim);">← Retour à la boutique</a>
-      <div class="product-detail" style="margin-top:36px;">
+
+      <!-- Barre d'achat rapide, juste au-dessus du produit -->
+      <div class="quick-buy-bar" style="margin-top:24px;">
+        <span class="qb-info">Intéressée par ce produit ?<span class="qb-price" id="qb-price"></span></span>
+        <a class="btn btn-primary btn-sm" href="#order-form">Commander maintenant</a>
+      </div>
+
+      <div class="product-detail">
         <div class="product-visual">
           <div class="picon-wrap" id="product-icon"></div>
         </div>
@@ -51,8 +58,8 @@
             </div>
           </div>
           <div class="actions">
-            <button class="btn btn-primary" id="add-cart-btn">Ajouter au panier</button>
-            <a class="btn btn-ghost" id="buy-now-btn" href="#" target="_blank" rel="noopener">Commander sur WhatsApp</a>
+            <a class="btn btn-primary" href="#order-form">Commander maintenant</a>
+            <button class="btn btn-ghost" id="add-cart-btn">Ajouter au panier</button>
           </div>
           <ul class="spec-list" id="product-specs"></ul>
         </div>
@@ -63,14 +70,53 @@
   <section style="background:var(--charcoal); padding:80px 0;">
     <div class="wrap">
       <div class="section-head">
-        <span class="eyebrow">Le rituel</span>
+        <span class="eyebrow">Utilisation</span>
         <h2 style="font-size:28px;">Comment l'utiliser</h2>
       </div>
       <div class="rituel-steps" id="product-steps"></div>
     </div>
   </section>
 
-  <section style="padding:80px 0;">
+  <!-- Formulaire de commande -->
+  <section id="order-form-section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Commander</span>
+        <h2 style="font-size:28px;">Finalisez votre commande</h2>
+      </div>
+      <div class="order-form" id="order-form">
+        <h3>Vos informations</h3>
+        <p class="of-sub">Vous serez contactée pour confirmer la livraison. Paiement à la réception.</p>
+        <div class="form-row">
+          <label for="of-name">Nom complet</label>
+          <input type="text" id="of-name" placeholder="Votre nom complet">
+        </div>
+        <div class="form-row">
+          <label for="of-phone">Numéro de téléphone</label>
+          <input type="tel" id="of-phone" placeholder="Ex : 062396718">
+        </div>
+        <div class="form-row">
+          <label for="of-city">Ville</label>
+          <select id="of-city">
+            <option>Libreville</option>
+            <option>Owendo</option>
+            <option>Akanda</option>
+            <option>Port-Gentil</option>
+            <option>Franceville</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="order-recap">
+          <span id="recap-line">—</span>
+          <strong id="recap-total">—</strong>
+        </div>
+        <button class="btn btn-primary" id="of-submit">Confirmer la commande</button>
+        <p class="form-error" id="of-error">Merci de renseigner votre nom et votre numéro de téléphone.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--charcoal); padding:80px 0;">
     <div class="wrap">
       <div class="section-head">
         <span class="eyebrow">Vos questions</span>
@@ -79,15 +125,15 @@
       <div class="faq-list">
         <div class="faq-item">
           <button class="faq-q">Est-ce que je paie avant de recevoir le produit ?<span class="plus">+</span></button>
-          <div class="faq-a"><p>Non. Vous payez en espèces directement au livreur, au moment où vous recevez votre commande.</p></div>
+          <div class="faq-a"><p>Non. Vous payez en espèces directement à la réception de votre commande.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-q">Combien de temps pour être livrée ?<span class="plus">+</span></button>
           <div class="faq-a"><p>24 à 48h à Libreville, Owendo et Akanda. 3 à 5 jours pour Port-Gentil et Franceville.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q">Que se passe-t-il si le produit ne me convient pas ?<span class="plus">+</span></button>
-          <div class="faq-a"><p>Vous pouvez le retourner non ouvert sous 14 jours pour un remboursement complet.</p></div>
+          <button class="faq-q">Comment se passe la confirmation de commande ?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Après avoir rempli le formulaire, vous serez contactée directement au numéro indiqué pour confirmer les détails avant l'envoi.</p></div>
         </div>
       </div>
     </div>
@@ -128,6 +174,7 @@
   const id = params.get("id");
   const product = LUXORA_PRODUCTS[id];
   const details = LUXORA_PRODUCT_DETAILS[id];
+  let qty = 1;
 
   if(!product){
     document.querySelector("main").innerHTML = `<div class="wrap" style="padding:120px 0; text-align:center;"><h1>Produit introuvable</h1><p style="margin-top:16px;"><a href="boutique.html" style="color:var(--gold); text-decoration:underline;">Retour à la boutique</a></p></div>`;
@@ -143,11 +190,12 @@
     }
     document.getElementById("product-name").textContent = product.name;
     if(product.brand){
-      document.getElementById("product-eyebrow").textContent = "LUXORA sélectionne — Marque " + product.brand;
+      document.getElementById("product-eyebrow").textContent = "Marque " + product.brand + " — distribué par LUXORA";
     }
     document.getElementById("product-desc").textContent = details.description;
     document.getElementById("product-old-price").textContent = formatFCFA(product.oldPrice);
     document.getElementById("product-price").textContent = formatFCFA(product.price);
+    document.getElementById("qb-price").textContent = " " + formatFCFA(product.price);
 
     const specsEl = document.getElementById("product-specs");
     details.specs.forEach(s => {
@@ -165,24 +213,36 @@
       stepsEl.appendChild(div);
     });
 
-    let qty = 1;
+    function updateRecap(){
+      document.getElementById("recap-line").textContent = `${product.name} × ${qty}`;
+      document.getElementById("recap-total").textContent = formatFCFA(product.price * qty);
+    }
+    updateRecap();
+
     const qtyValue = document.getElementById("qty-value");
-    document.getElementById("qty-minus").addEventListener("click", () => { if(qty>1){ qty--; qtyValue.textContent = qty; } });
-    document.getElementById("qty-plus").addEventListener("click", () => { qty++; qtyValue.textContent = qty; });
+    document.getElementById("qty-minus").addEventListener("click", () => { if(qty>1){ qty--; qtyValue.textContent = qty; updateRecap(); } });
+    document.getElementById("qty-plus").addEventListener("click", () => { qty++; qtyValue.textContent = qty; updateRecap(); });
 
     document.getElementById("add-cart-btn").addEventListener("click", (e) => {
       addToCart(id, qty);
       pulseSuccess(e.currentTarget, "Ajouté ✓");
     });
 
-    const buyBtn = document.getElementById("buy-now-btn");
-    function updateBuyLink(){
-      const msg = `Bonjour LUXORA, je souhaite commander : ${product.name} x${qty} (${formatFCFA(product.price*qty)})`;
-      buyBtn.href = buildWhatsAppLink(msg);
-    }
-    updateBuyLink();
-    document.getElementById("qty-minus").addEventListener("click", updateBuyLink);
-    document.getElementById("qty-plus").addEventListener("click", updateBuyLink);
+    document.getElementById("of-submit").addEventListener("click", () => {
+      const name = document.getElementById("of-name").value.trim();
+      const phone = document.getElementById("of-phone").value.trim();
+      const city = document.getElementById("of-city").value;
+      const errorEl = document.getElementById("of-error");
+      if(!name || !phone){
+        errorEl.classList.add("show");
+        return;
+      }
+      errorEl.classList.remove("show");
+      const msg = `Nouvelle commande LUXORA\n\nNom : ${name}\nTéléphone : ${phone}\nVille : ${city}\n\nProduit : ${product.name} x${qty}\nTotal : ${formatFCFA(product.price*qty)}`;
+      const orderForm = document.getElementById("order-form");
+      orderForm.innerHTML = `<div class="form-success"><h4>Commande envoyée ✓</h4><p>Merci ${name} ! Vous serez contactée au ${phone} pour confirmer la livraison à ${city}.</p></div>`;
+      window.open(buildWhatsAppLink(msg), "_blank");
+    });
   }
 
   document.querySelectorAll(".faq-q").forEach(btn => {

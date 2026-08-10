@@ -108,16 +108,58 @@
         <thead><tr><th>Produit</th><th>Prix</th><th>Quantité</th><th>Sous-total</th><th></th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
-      <div class="cart-summary" data-reveal="fade-up">
-        <div class="row"><span>Sous-total</span><span id="summary-subtotal">${formatFCFA(total)}</span></div>
-        <div class="row"><span>Livraison</span><span>Calculée à la confirmation</span></div>
-        <div class="row total"><span>Total</span><span id="summary-total">${formatFCFA(total)}</span></div>
-        <a class="btn btn-primary" id="checkout-btn" href="#" target="_blank" rel="noopener">Commander sur WhatsApp</a>
-        <p class="cart-note">Paiement en espèces à la livraison — aucun paiement en ligne requis.</p>
+      <div class="order-form" style="margin-left:auto;" data-reveal="fade-up">
+        <h3>Finaliser la commande</h3>
+        <p class="of-sub">Vous serez contactée pour confirmer la livraison. Paiement à la réception.</p>
+        <div class="form-row">
+          <label for="of-name">Nom complet</label>
+          <input type="text" id="of-name" placeholder="Votre nom complet">
+        </div>
+        <div class="form-row">
+          <label for="of-phone">Numéro de téléphone</label>
+          <input type="tel" id="of-phone" placeholder="Ex : 062396718">
+        </div>
+        <div class="form-row">
+          <label for="of-city">Ville</label>
+          <select id="of-city">
+            <option>Libreville</option>
+            <option>Owendo</option>
+            <option>Akanda</option>
+            <option>Port-Gentil</option>
+            <option>Franceville</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="order-recap">
+          <span>Total</span>
+          <strong id="cart-form-total">${formatFCFA(total)}</strong>
+        </div>
+        <button class="btn btn-primary" id="of-submit">Confirmer la commande</button>
+        <p class="form-error" id="of-error">Merci de renseigner votre nom et votre numéro de téléphone.</p>
       </div>
     `;
 
-    document.getElementById("checkout-btn").href = buildWhatsAppLink();
+    document.getElementById("of-submit").addEventListener("click", () => {
+      const name = document.getElementById("of-name").value.trim();
+      const phone = document.getElementById("of-phone").value.trim();
+      const city = document.getElementById("of-city").value;
+      const errorEl = document.getElementById("of-error");
+      if(!name || !phone){
+        errorEl.classList.add("show");
+        return;
+      }
+      errorEl.classList.remove("show");
+      const cartNow = getCart();
+      let lines = [`Nouvelle commande LUXORA`, ``, `Nom : ${name}`, `Téléphone : ${phone}`, `Ville : ${city}`, ``];
+      Object.keys(cartNow).forEach(pid => {
+        const p = LUXORA_PRODUCTS[pid];
+        if(p) lines.push(`- ${p.name} x${cartNow[pid]} (${formatFCFA(p.price * cartNow[pid])})`);
+      });
+      lines.push(``, `Total : ${formatFCFA(cartTotal())}`);
+      const msg = lines.join("\n");
+      document.querySelector(".order-form").innerHTML = `<div class="form-success"><h4>Commande envoyée ✓</h4><p>Merci ${name} ! Vous serez contactée au ${phone} pour confirmer la livraison à ${city}.</p></div>`;
+      window.open(buildWhatsAppLink(msg), "_blank");
+    });
 
     if(typeof initScrollReveal === "function") initScrollReveal();
 
@@ -154,9 +196,8 @@
         const p = LUXORA_PRODUCTS[id];
         if(qtyEl){ qtyEl.textContent = newQty; if(typeof bumpElement === "function") bumpElement(qtyEl); }
         if(subtotalEl && p) subtotalEl.textContent = formatFCFA(p.price * newQty);
-        document.getElementById("summary-subtotal").textContent = formatFCFA(cartTotal());
-        document.getElementById("summary-total").textContent = formatFCFA(cartTotal());
-        document.getElementById("checkout-btn").href = buildWhatsAppLink();
+        const cartFormTotal = document.getElementById("cart-form-total");
+        if(cartFormTotal) cartFormTotal.textContent = formatFCFA(cartTotal());
       });
     });
   }
