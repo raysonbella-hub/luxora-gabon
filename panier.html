@@ -56,6 +56,7 @@
 
 <script src="js/products.js"></script>
 <script src="js/cart.js"></script>
+<script src="js/order-submit.js"></script>
 <script>
   const ICONS = {
     triptych: `<svg viewBox="0 0 120 120" class="picon" fill="none"><rect x="20" y="40" width="16" height="55" rx="2"/><rect x="24" y="30" width="8" height="12" rx="1"/><rect x="52" y="30" width="16" height="65" rx="2"/><rect x="56" y="20" width="8" height="12" rx="1"/><rect x="84" y="45" width="16" height="50" rx="2"/><rect x="88" y="35" width="8" height="12" rx="1"/><line x1="10" y1="100" x2="110" y2="100" stroke-width="1"/></svg>`,
@@ -109,18 +110,18 @@
         <tbody>${rows}</tbody>
       </table>
       <div class="order-form" style="margin-left:auto;" data-reveal="fade-up">
-        <h3>Finaliser la commande</h3>
-        <p class="of-sub">Vous serez contactée pour confirmer la livraison. Paiement à la réception.</p>
+        <h3>Passer commande</h3>
+        <p class="of-sub">Pas de paiement maintenant. Vous payez seulement quand vous recevez le produit.</p>
         <div class="form-row">
-          <label for="of-name">Nom complet</label>
-          <input type="text" id="of-name" placeholder="Votre nom complet">
+          <label for="of-name">Votre nom</label>
+          <input type="text" id="of-name" placeholder="Ex : Bella Obiang">
         </div>
         <div class="form-row">
-          <label for="of-phone">Numéro de téléphone</label>
+          <label for="of-phone">Votre numéro de téléphone</label>
           <input type="tel" id="of-phone" placeholder="Ex : 062396718">
         </div>
         <div class="form-row">
-          <label for="of-city">Ville</label>
+          <label for="of-city">Votre ville</label>
           <select id="of-city">
             <option>Libreville</option>
             <option>Owendo</option>
@@ -134,31 +135,41 @@
           <span>Total</span>
           <strong id="cart-form-total">${formatFCFA(total)}</strong>
         </div>
-        <button class="btn btn-primary" id="of-submit">Confirmer la commande</button>
-        <p class="form-error" id="of-error">Merci de renseigner votre nom et votre numéro de téléphone.</p>
+        <button class="btn btn-primary" id="of-submit" style="font-size:15px;padding:20px 34px;">ENVOYER MA COMMANDE</button>
+        <p class="form-error" id="of-error">Merci d'écrire votre nom et votre numéro de téléphone.</p>
       </div>
     `;
 
-    document.getElementById("of-submit").addEventListener("click", () => {
+    document.getElementById("of-submit").addEventListener("click", async () => {
       const name = document.getElementById("of-name").value.trim();
       const phone = document.getElementById("of-phone").value.trim();
       const city = document.getElementById("of-city").value;
       const errorEl = document.getElementById("of-error");
+      const btn = document.getElementById("of-submit");
       if(!name || !phone){
         errorEl.classList.add("show");
         return;
       }
       errorEl.classList.remove("show");
+      btn.disabled = true;
+      btn.textContent = "ENVOI EN COURS...";
+
       const cartNow = getCart();
-      let lines = [`Nouvelle commande LUXORA`, ``, `Nom : ${name}`, `Téléphone : ${phone}`, `Ville : ${city}`, ``];
+      let lines = [];
       Object.keys(cartNow).forEach(pid => {
         const p = LUXORA_PRODUCTS[pid];
-        if(p) lines.push(`- ${p.name} x${cartNow[pid]} (${formatFCFA(p.price * cartNow[pid])})`);
+        if(p) lines.push(`${p.name} x${cartNow[pid]} (${formatFCFA(p.price * cartNow[pid])})`);
       });
-      lines.push(``, `Total : ${formatFCFA(cartTotal())}`);
-      const msg = lines.join("\n");
-      document.querySelector(".order-form").innerHTML = `<div class="form-success"><h4>Commande envoyée ✓</h4><p>Merci ${name} ! Vous serez contactée au ${phone} pour confirmer la livraison à ${city}.</p></div>`;
-      window.open(buildWhatsAppLink(msg), "_blank");
+      lines.push(`Total : ${formatFCFA(cartTotal())}`);
+
+      await submitOrder({
+        nom: name,
+        telephone: phone,
+        ville: city,
+        commande: lines.join(" | ")
+      });
+
+      document.querySelector(".order-form").innerHTML = `<div class="form-success"><h4>Commande envoyée ✓</h4><p>Merci ${name} ! Vous serez appelée au ${phone} pour confirmer la livraison à ${city}.</p></div>`;
     });
 
     if(typeof initScrollReveal === "function") initScrollReveal();
